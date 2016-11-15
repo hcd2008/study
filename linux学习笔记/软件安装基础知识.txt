@@ -1,0 +1,36 @@
+软件安装：
+1，在线安装
+sudo apt-get install ***
+APT=Advance Packaging Tool 高级包装工具 可以自动下载，配置，安装二进制或者源代码格式的软件包。
+sudo apt-get update  保持本地的软件包列表是最新的。软件包是从服务器上下载的。表里会有软件依赖信息的记录。
+apt-get install+软件包名 安装一个软件包
+apt-get update 从软件源镜像服务器下载/更新用于更新本地软件源的软件包列表。
+apt-get remove 移除已安装的软件包。
+apt-get purge 同remove，单会完全移除软件包，包含其配置文件。
+apt-get clean  apt-get autoclean 移除已安装的软件包
+
+参数：
+-q 静默安装 -d 只下载不安装 -f修复损坏的依赖关系 
+
+重新安装： sudo apt-get --reinstall install ***
+
+软件升级： 
+sudo apt-get update 更新软件源
+sudo apt-get upgrade 升级没有依赖问题的软件包
+sud apt-get dist-upgrade 升级并解决依赖关系
+
+软件搜索：
+sudo apt-cache search 软件名1 软件名2...
+
+2，dpkg从本地磁盘安装deb软件包
+dpkg=Debian Package
+参数 dpkg
+-i+包名 安装指定deb包
+-R+目录名 安装该目录下的所有deb安装包
+-r+包名 移除
+-L+包名 查看deb包目录信息
+
+安装过程：
+sudo apt-get -d 包名 只下载不安装
+dpkg -i 包名
+apt-get -f install 修复依赖关系

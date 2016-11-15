@@ -1,0 +1,40 @@
+模板输出
+继承了Controller ，则无需实例化视图类的情况下，直接调用视图类的方法：
+$this->assign('list',$list); return $this->fetch();
+常用方法：
+assign 模板变量赋值  
+fetch 渲染模板文件
+display 渲染内容
+engine 初始化模板引擎
+
+assign方法可以把任何类型的变量赋值给模板，关键在于模板中如何输出。
+fetch默认渲染当前控制器对应操作的模板。
+
+{volist name="list" id="user"}
+	昵称：{$usr.nickname} <br/>
+	邮箱：{$usr.email}
+{/volist}
+name属性就是模板变量的名称。id属性是定义每次循环输出的变量。
+
+分页输出
+程序：$list=UserModel::paginate(3); $this->assign('list',$list);return $this->fetch();
+模板： {$list->render()}
+
+公共模板
+加载头部 {include file='user/header' title='查看列表'} 模板中标题改为[title]
+
+修改模板配置 修改配置文件中的template参数。
+view_path参数决定了你的模板文件的根目录。
+
+模板布局
+定义模板布局文件：application/index/view/layout.html
+{include file='user/header'}
+	{__CONTENT__}
+{include file='user/footer'}
+application/index/view/user/index.html调用模板布局：
+{layout name="layout" /}
+。。。。。
+布局模板中的{__CONTENT__}会自动替换为解析后的inde.html内容。
+可以不适用CONTENT,例如：
+<layout name="layout/newlayout" replace="[__REPLACE__]" />
+所有的

@@ -1,0 +1,47 @@
+﻿集中式VS分布式
+集中式：版本库是集中存放在中央服务器的，而干活的时候，用的都是自己的电脑，所以要先从中央服务器取得最新的版本，然后开始干活，干完活了，再把自己的活推送给中央服务器
+分布式：分布式版本控制系统根本没有“中央服务器”，每个人的电脑上都是一个完整的版本库。
+
+创建仓库  git init
+添加文档  git add file   git add * 添加当前目录下的所有
+提交文档  git commit -m "修改说明"
+提交状态  git status
+提交日志  git log
+版本回退  git reset --hard HEAD表示当前版本  HEAD^上一个版本 HEAD^^上上个版本 HEAD~4 往上4个版本 或者填写16版本号的前几位
+重返未来  必须找到已经回退的commit id. git reflog 查看每一次命令
+撤销修改  git checkout -- file 可以丢弃工作区的修改。
+删除文件  git rm 文件名
+
+工作区和暂存区
+工作区：你在电脑里能看到的目录。
+版本库：隐藏目录.git，这个不算工作区，而是Git的版本库。包含的东西：state（或者叫index）的暂存区，自动创建的第一个分支master，指向master的一个指针HEAD。
+
+第一步是用git add把文件添加进去，实际上就是把文件修改添加到暂存区；
+第二步是用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支。
+因为我们创建Git版本库时，Git自动为我们创建了唯一一个master分支，所以，现在，git commit就是往master分支上提交更改。
+git add命令实际上就是把要提交的所有修改放到暂存区（Stage），然后，执行git commit就可以一次性把暂存区的所有修改提交到分支。
+
+为什么Git比其他版本控制系统设计得优秀？因为Git跟踪并管理的是修改，而非文件
+
+命令git checkout -- readme.txt意思就是，把readme.txt文件在工作区的修改全部撤销，这里有两种情况：
+一种是readme.txt自修改后还没有被放到暂存区，现在，撤销修改就回到和版本库一模一样的状态；
+一种是readme.txt已经添加到暂存区后，又作了修改，现在，撤销修改就回到添加到暂存区后的状态。
+总之，就是让这个文件回到最近一次git commit或git add时的状态。
+git checkout -- file命令中的--很重要，没有--，就变成了“切换到另一个分支”的命令
+
+场景1：当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令git checkout -- file。
+场景2：当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，分两步，第一步用命令git reset HEAD file，就回到了场景1，第二步按场景1操作。
+场景3：已经提交了不合适的修改到版本库时，想要撤销本次提交，参考版本回退一节，不过前提是没有推送到远程库。
+
+远程仓库
+创建SSH Key： ssh-keygen -t rsa -C "邮箱地址"
+用户主目录里找到.ssh目录，里面有id_rsa和id_rsa.pub两个文件，这两个就是SSH Key的秘钥对，id_rsa是私钥，不能泄露出去，id_rsa.pub是公钥，可以放心地告诉任何人。
+
+添加远程库
+git remote add origin git@github.com:hcd2008/mygit.git  将当前库添加到github上的mygit 并命名为origin
+git remote -v 添加完远程库后可用此命令可以查看远程库详情
+将本地库的内容推送到远程库
+git push -u origin master  将master分支同步到名称为origin的远程库
+加上了-u参数，Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令
+本地做了提交，通过 git puch origin master 进行同步即可。
+注意：正确同步的前提，github上添加了自己电脑的id_rsa.pub的内容；使用git remote add添加远程主机名称；使用git push -u进行第一次远程同步，如果失败原因是远程文件不是空的，先使用git pull将远程文件同步，在git push -u。以后每次修改使用git push推送即可。

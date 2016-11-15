@@ -1,0 +1,43 @@
+if($_GET['daochu']==1){
+
+	require_once DT_ROOT.'/file/PHPExcel/Classes/PHPExcel.php';
+	$objExcel = new PHPExcel(); 
+	$objExcel->setActiveSheetIndex(0);
+	 
+	$objActSheet = $objExcel->getActiveSheet(); 
+	$objActSheet->setTitle($company."监测信息"); 
+
+	$objActSheet->setCellValue('A1', '标题');
+	$objActSheet->setCellValue('B1', '分类');
+	$objActSheet->setCellValue('C1', '日期');
+	
+	$objExcel->getActiveSheet()->getColumnDimension('A')->setWidth(100);
+	$objExcel->getActiveSheet()->getColumnDimension('B')->setWidth(60);
+	$objExcel->getActiveSheet()->getColumnDimension('C')->setWidth(50);
+	
+	$i=2;
+	foreach($fglists as $r){
+		$r['title']=strip_tags($r['title']);
+		$objActSheet->setCellValue('A' . $i, $r['title']);
+		$objExcel->getActiveSheet()->getCell('A' . $i)->getHyperlink()->setUrl($r[linkurl]); 
+						
+		$objActSheet->setCellValue('B' . $i, $r['catname']);
+		$objExcel->getActiveSheet()->getCell('B' . $i)->getHyperlink()->setUrl($r[clinkurl]); 
+		$objActSheet->setCellValue('C' . $i, $r['adddate']);
+		$i++;
+	}
+	
+	
+	$outputFileName = "report-".date("Y-m-d",time()).".xls"; 
+	$objWriter = PHPExcel_IOFactory::createWriter($objExcel, 'Excel5');
+	header("Content-Type: application/force-download"); 
+	header("Content-Type: application/octet-stream"); 
+	header("Content-Type: application/download"); 
+	header('Content-Disposition:inline;filename="'.$outputFileName.'"'); 
+	header("Content-Transfer-Encoding: binary"); 
+	header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
+	header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
+	header("Pragma: no-cache"); 
+	$objWriter->save('php://output'); 	
+	exit;
+}				

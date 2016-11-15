@@ -1,0 +1,22 @@
+数据库
+数据查询从低到高的三个层次：
+1，数据库原生查询（SQL查询）
+2，数据库链式查询（查询构造器）
+3，模型的对象化查询
+
+全局数据库配置 application/database.php
+模块的数据库配置application/index/database.php
+模块的数据库配置只需要配置和全局数据库配置文件差异的部分，相同的不需要重复配置。
+
+原生查询：
+query()用于查询 execute()用于写入
+use think\Db;
+Db::execute("insert into think_data ....");
+Db::query("select * from ...");
+原则：读操作使用query 写操作使用execute
+返回值：query默认返回的是数据集，execute返回值是影响的行数。
+
+查询构造器：
+Db::table('think_data')->insert(['name'=>'thinkphp','status'=>1])
+Db::name('data')->insert(['name'=>'thinkphp','status'=>1]);
+助手函数 $db=db('data'); $db->insert(['name'=>'thinkphp','status'=>1]); 默认每次重新连接数据库。

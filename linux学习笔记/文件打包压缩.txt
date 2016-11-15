@@ -1,0 +1,23 @@
+1,zip压缩打包程序
+zip -r -q -0 hcd.zip /home/hcd
+将当前文件夹的文件打包到 /home/hcd/hcd.zip 文件
+-r递归打包 -q安静模式 -o输出文件，紧跟打包输出文件名
+zip -r -9 -q -0 hcd.zip /home/hcd -x ~/.zip
+-9设置压缩级别 9压缩率最高。 -x排除上次创建的zip文件
+-e创建加密压缩包
+-l 创建linux和windows通用的压缩包。否则linux上编辑的文本，在windows上打开可能看起来没有换行。
+
+2，unzip解压缩zip文件。
+unzip hcd.zip
+unzip -q hcd.zip -d ziptest 安静模式解压到ziptest文件夹
+unzip -l hcd.zip 只查看不解压
+unzip -o gbk 中文压缩文件.zip  -o指定编码类型。
+
+3，rar打包压缩命令
+rar a hcd.rar
+rar d hcd.rar abc.txt 从压缩包中删除abc.txt
+rar l hcd.rar 只查看不解压
+
+unrar x hcd.rar
+
+4,tar打包工具

@@ -1,0 +1,17 @@
+destoon 公司模块学习笔记
+
+1、在根目录下的 index.php中 判断是url否包含homepage，如果不包含则include template('index')，显示主页。如果包含则require module/company/init.inc.php 对公司页进行初始化。
+	表现形式 localhost 显示主页  localhost?homepage='vae' 显示vae公司的主页。
+2、接下来init.inc.php文件进行处理。判断用户是否存在是否合法，vip是否过期，样式的获取等。在此文件中定义了$file变量，如果定义了此变量则include module/company/$file.inc.php 文件 否则 默认$file=homepage 包含 module/company/homepage.inc.php文件。另外该文件定义了template值为用户存储的模板用来加载用户自定义的模板,如为定义则默认为homepage。
+	表现形式 localhost?homepage='vae' 未定义file使用默认的homepage.inc.php文件来显示页面
+	         localhost?homepage='vae'&file="vae" 使用Module/company/vae.inc.php来显示页面
+	         企业mengniu的企业网页模板位置：如果mengniu账号未定义则template('index','homepage'),如果定义了则template('index','company表中该用户对应的template值')
+3、接下来$file.inc.php文件进行处理。该文件包含了模板文件进行文件显示。如 template('index',$template);
+云平台的$file一般是 jingpin,biaofa和xlbz。如jingpin.inc.php中规定了该用户该获取多少竞品数据使用什么模板。
+
+对于云平台。
+1、竞品，标法，危害物限量等公用数据都实在云平台统一维护的。不同的用户只调用自己的数据而已。这样就做到了维护一份，大家公用的目的了。
+2、云平台定义的rewrite： yun.foovip.net?homepage=beingmate&file=jingpin解析为 beingmate.foodvip.net/jingpin 
+3、jingpin.inc.php文件分析： 
+	新增的一些表格，企业表（qy）,品牌(pinpai), 企业自定义分类(category_member),快速搜索（kjselect_26）会员的食物营养成分，企业自定义的用户及权限信息（user）,企业信息表（暂未看懂），竞争产品信息表（product），
+

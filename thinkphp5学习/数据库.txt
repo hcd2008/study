@@ -1,0 +1,36 @@
+数据库
+数据查询从低到高的三个层次：
+1，数据库原生查询（SQL查询）
+2，数据库链式查询（查询构造器）
+3，模型的对象化查询
+
+全局数据库配置 application/database.php
+模块的数据库配置application/index/database.php
+模块的数据库配置只需要配置和全局数据库配置文件差异的部分，相同的不需要重复配置。
+
+原生查询：
+query()用于查询 execute()用于写入
+use think\Db;
+Db::execute("insert into think_data ....");
+Db::query("select * from ...");
+原则：读操作使用query 写操作使用execute
+返回值：query默认返回的是数据集，execute返回值是影响的行数。
+
+查询构造器：
+Db::table('think_data')->insert(['name'=>'thinkphp','status'=>1])
+Db::name('data')->insert(['name'=>'thinkphp','status'=>1]);
+助手函数 $db=db('data'); $db->insert(['name'=>'thinkphp','status'=>1]); 助手函数每次调用会重新连接数据库，不要常用。
+
+模型和关联
+ORM：Object/Relation Mapping  对象-关系映射。
+一般来说，每个数据表会和一个模型对应。
+ORM的基本特性：表映射到记录，记录映射到对象，字段映射到对象属性。
+模型是一种对象化的操作封装，而不是简单的curd操作。
+简单的curd操作直接使用Db类即可。
+模型类和Db类的区别：主要在于对象的封装。DB类的查询默认返回的是数组（或者集合），而模型类返回的是当前的模型对象实例（或者集合）。
+模型是比Db类更高级的数据封装。
+
+模型的使用
+模型自动对应一个数据表：数据库前缀+当前的模型类名（不含命名空间） 手动设置 $table='think_user'或 $name='user';
+
+模型操作

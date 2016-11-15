@@ -1,0 +1,85 @@
+一、CI的文件结构
+	application:应用文件夹,控制器、模型、视图等
+	system：系统文件夹，CI核心文件
+	application包含的文件：
+		cache 存放缓存数据
+		controllers 存放控制器目录
+		core 扩展系统的核心文件
+		errors 包含出错信息页
+		hooks 存放钩子
+		helpers 辅助函数
+		language 存放本国语言的文件目录
+		libraries 类库
+		logs 日志文件
+		models 模型目录
+		views 模板目录
+
+	system包含的文件：
+		core 系统核心文件
+		fonts 水印图像使用的字体
+		helpers 辅助函数
+		language 存放英语目录文件
+		Libraries 存放类库文件，如分页类、图像类
+
+	application最重要的文件夹是config，该文件夹内有两个需要关注的文件:config.php和database.php
+	其次是controller、models和views文件夹，分别存放控制器、模型和视图
+
+	你要装载一个类叫做无限分类的类Category, CI会先查找application/libraries目录。如果这个目录中不存在，CI会寻找system/libraries目录。这意味着可以通过把同名的文件放入application目录来取代CI核心库的libraies, helpers。但不要轻易尝试这样做，因为这种高度的灵活性需要你拥有足够多的CI使用经验。
+
+二、CI如何工作？
+	CI使用MVC模式和单一入口文件。
+
+	例如当我们访问http://localhost/ci_demo/index.php的时候，程序会依靠index.php来做大量的初始化工作，调用大量的基础类库，并根据index.php后面的参数来加载控制器和方法，然后调用模型，加载视图等内容信息。
+
+	当然在这个例子当中index.php后面你并没有看到任何参数，但这不代表就没有参数存在，因为CI事先已经默认指定好了控制器和方法的参数，这个默认的参数可以自己指定，配置文件存放在application/config/routes中
+
+	假如URL网址为：http://yoursite/index.php/control/func/param1/param2/...
+	上面网址可以理解为：http://localhost/index.php/控制器名/方法名/方法的参数1/方法的参数2/...
+
+三、控制器
+	a、类名必须以大写字母开头
+	b、类必须 extends CI_Controller
+	c、URL会在控制器中默认载入index()方法。
+	d、保留字不能被使用。Controller,CI_Base,_ci_initialize,Default,index
+
+四、视图
+	载入视图：由于我们写的控制器继承了父控制器，所以我们可以调用下面的函数装载一个视图：
+	$this->load->view("视图文件名称");
+
+	视图文件扩展名为.php的，文件不用写扩展名，如果为.html  .tpl则必须写扩展名
+	如hello.php  则$this->load->view("hello");
+	如hello.html 则$this->load->view("hello.html")
+
+	给视图添加动态数据：
+	将动态数据存入数组 $data['content']=array('name'=>'jay');
+	$this->load->view("hello",$data);
+	视图调用 echo $content['name'];
+
+五、模型
+	专门用来和数据库打交道的。
+	其实模型就是一个php类，里面包含添加、删除、更新和统计数据等方法。
+
+	a、创建的模型文件应该放在application/models/文件夹，文件名应该是模型名小写格式。
+	b、类名的首字母必须大写，其他字母小写。
+	c、确保 extends CI_Model
+	例：class User_model extends CI_Model
+
+	载入模型：
+	1，手动载入。
+	$this->load->model('User_model');
+	通常放在控制器的构造函数进行装载。
+
+	2，自动载入
+	打开 application/config/autoload.php 文件，设置 $autoload['model']=array();
+
+	使用模型：
+	$this->User_model->insert();
+	$this->User_model->add();
+
+六、辅助函数
+	载入辅助函数:
+	CI默认没有载入辅助函数文件，一旦被载入，辅助函数将全局可用。
+	$this->load->helper('辅助函数文件名字，不带_helper和.php后缀的那部分');
+	如载入数组辅助函数文件 $this->load->helper("array")
+	一次载入多个辅助函数 $this->load->helper( array('helper1', 'helper2', 'helper3') );
+	

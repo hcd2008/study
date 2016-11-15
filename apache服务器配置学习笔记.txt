@@ -1,0 +1,48 @@
+配置文件 conf目录下的 httpd.conf文件。
+
+一、基本配置
+
+1,ServerRoot "d:/wamp/bin/apache/apache2.2.21"
+apache软件安装的位置。
+
+2，Listen 80  服务器监听的端口号
+
+3，ServerName localhost:80 网站的主机名
+
+4，ServerAdmin admin@localhost 管理员的邮箱地址
+
+5，DocumentRoot "d:/wamp/www/"  主站点的网页存储位置
+
+6，对主站点的目录进行访问控制：
+<Directory />
+    Options FollowSymLinks
+    AllowOverride All
+    Order deny,allow
+    Deny from all
+</Directory>
+说明：
+options:配置在特定目录使用哪些特性，常用值及含义：
+ExecCGI:该目录下允许执行CGI脚本。
+FollowSymLinks:在该目录下允许文件系统使用符号连接
+Indexes:当用户访问该目录时，如果用户找不到DirectoryIndex指定的主页文件（例如index.html）则返回该目录
+下的文件列表给用户。
+AllowOverride:允许存在于.htaccess文件中的指令类型。
+	被设置为none时，不搜索该目录下的.htaccess文件。
+	设置为all时，在.htaccess文件中可以使用所有的指令。
+	还可设置为其他值如 options fileinfo authconfig limit等
+Order:控制在访问时 allow和deny两个访问规则哪个优先。
+Allow:允许访问的主机列表
+Deny:拒绝访问的主机列表
+
+7，DerectoryIndex index.html index.htm index.php
+主页文件的设置
+
+二、配件文件的语法
+1，Apache配置文件的每一行包含一个指令，在行尾使用“\”可续行，但是反斜杠与下一行之间不能有任何其他字符(包括空白字符)。
+2，指令不分区大小写
+3，指令的参数通常是大小写敏感的。
+4，#开头的行被视为注解并被忽略。
+5，注解不能出现在指令的右边。
+6，空白行和指令前的空白字符将被忽略
+
+

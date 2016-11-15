@@ -1,0 +1,97 @@
+关键路径:
+tp5  项目根目录  ROOT_PATH
+tp5/application  应用目录 APP_PATH
+tp5/thinkphp  框架核心目录  THINK_PATH
+tp5/extend  应用扩展目录 EXTEND_PATH
+tp5/vendor composer扩展目录 VENDOR_PATH
+
+入口文件：
+默认位置： public/index.php
+内容：
+define('APP_PATH', __DIR__ . '/../application/');
+require __DIR__ . '/../thinkphp/start.php';
+
+在php5.3中，增加了一个新的常量__DIR__,指向当前执行的PHP脚本所在的目录。
+例如当前执行的php文件为 /www/website/index.php
+则__FILE__等于 /www/website/index.php
+而__DIR__等于 /www/website
+
+命名空间：
+根据类的命名空间可以快速定位文件位置。
+在thinkphp5.0的规范里面，命名空间其实对应了文件的所在目录。
+app命名空间通常代表了文件的其实目录为application。
+
+use导入一个命名空间的类库，然后可以在当前文件中直接使用该别名而不需要使用完整的命名空间路径访问类库。
+use think\Controller或class Index extends \think\Controller
+
+URL和路由
+标准的URL访问格式：
+http://serverName/index.php/模块/控制器/操作
+模块在thinkphp中的概念其实就是应用目录下面的子目录，而官方的规范是目录名小写，因此模块全部采用小写命名，无论URL是否开启大小写转换，模块名都会强制小写。
+默认情况下，URL地址中的控制器和操作名是不区分大小写的。
+控制url是否自动转换，配置 url_convert
+
+隐藏index.php 入口文件的同级添加 .htaccess文件
+.htaccess内容：
+<IfModule mod_rewrite.c>
+Options +FollowSymlinks -Multiviews
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php/$1 [QSA,PT,L]
+</IfModule>
+注意phpstudy的内容不同，如下，原因为apache版本不同：
+<IfModule mod_rewrite.c> 
+Options +FollowSymlinks -Multiviews 
+RewriteEngine on 
+RewriteCond %{REQUEST_FILENAME} !-d 
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteRule ^(.*)$ index.php [L,E=PATH_INFO:$1] 
+</IfModule>
+
+定义路由：
+application/route.php 添加规则
+定义路由规则后，原来的url地址会失效。
+定义规则后，生成url地址的方法：
+Url::bulid('blog/get','id=5'); 或 url('blog/get','id=5')
+生成的url带后缀配置：
+'url_html_suffix'=>'html'
+
+thinkphp5增加了Request请求对象和Response响应对象的概念。
+Request对象的作用：与客户端交互，收集客户端的Form cookie 超链接，或者收集服务器端的环境变量。
+Request的各种方法主要用来处理客户端浏览器提交的请求中的各项参数和选项。
+thinkphp5的request对象由 think\Request类完成。
+Request对象的一个主要职责是统一和更安全地获取当前的请求信息，避免直接操作$_GET、$_POST、$_REQUEST、$_SESSION、$_COOKIE，甚至$_FILES等全局变量，而是统一使用Request对象提供的方法来获取请求变量。
+
+调用request对象的5种方式：
+1，传统方式
+核心代码引入Request类： use think\Request;
+调用: $request=Request::instance(); echo $request->url();
+2,继承controller
+引入controller类：use think\Controller;
+继承并调用：class Index extends Controller
+echo $this->request->url();
+3,自动注入
+引入request类：use think\Request;
+对象注入：
+public function hello(Request $request){
+	echo $request->url();
+}
+4,动态绑定属性
+5，使用助手函数 request();
+
+获取请求变量：
+public function hello(Request $request){
+	print_r($request->param());
+}
+可以用input()方法代替。
+$request->param('name','world','strtolower'); //添加过滤
+设置全局过滤 'default_filter' => 'htmlspecialchars '
+
+响应对象  自动输出 
+系统会根据default_return_type和default_ajax_return配置决定响应输出的类型。
+默认的自动响应输出会自动判断是否AJAX请求
+
+页面跳转：
+方法一：use traits\controller\Jump;
+方法二：在任何时候（即使没有引入Jump trait的话），我们可以使用系统提供的助手函数redirect函数进行重定向。

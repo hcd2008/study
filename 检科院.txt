@@ -1,0 +1,8 @@
+vi /usr/local/nginx/conf/nginx.conf
+：wq保存
+
+技术-孙健 2016/6/13 16:52:06
+/usr/local/nginx/sbin/nginx -t
+/usr/local/nginx/sbin/nginx -s reload
+
+34服务器上的 lab

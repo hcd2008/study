@@ -1,0 +1,52 @@
+1,命名空间
+广义上说：命名空间是一种封装事物的方法。
+对于文件夹中的文件来说，文件夹就是命名空间。
+
+2，作用
+用来解决在编写类库或应用程序时创建可重用的代码如类或函数时碰到的两类问题：
+	用户编写的代码与php内部的类/函数/常量或第三方类/函数/常量之间的名字冲突。
+	为很长的标识符名称创建一个别名的名称，提高源代码的可读性。
+
+以下类型的代码受命名空间的影响，它们是：类、接口、函数和常量。
+命名空间通过关键字namespace来声明。如果一个文件中包含命名空间，它必须在其他所有代码之前声明命名空间。除了一个declare。
+
+php如何知道要使用哪一个命名空间元素的？
+类名可以通过三种方式引入：
+1，非限定名称，或不包含前缀的类名称。
+$a=new foo(); foo:staticmethod();
+foo将被解析为 currentnamespace\foo
+如果使用foo的代码是全局的，不包含在任何命名空间中的代码，则foo会被解析为foo。
+
+2，限定名称，或包含前缀的名称。
+$a=new subnamespace\foo(); subnamespace\foo::staticmethod()
+如果当前的命名空间是currentnamespace，则food会被解析为currentnamespace\subnamespace\foo.
+如果使用foo的代码是全局的，不包含在任何命名空间中的代码，food会被解析为subnamespace\foo
+
+3,完全限定名称，或包含了全局前缀操作符的名称。
+$a=new \currentnamespace\foo();或 \currentnamespace\foo::staticmethod();
+这种情况下foo总是被解析为代码中的文字名。
+
+举例 file1.php 内容
+<?php
+	namespace Foo\Bar\subnamespace;
+	const FOD=1;
+	function foo(){}
+	class foo{
+		static function staticmethod(){}
+	}
+?>
+
+file2.php内容
+<?php
+	namespace Foo\Bar;
+	include "file1.php"; 
+	const FOO=2;
+	function foo(){}
+	class food{
+		static function staticmethod(){}
+	}
+
+
+	foo(); //解析为FOO\Bar\foo
+	foo::staticmethod();//解析为Foo\Bar\foo的静态方法staticmethod.
+?>

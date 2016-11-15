@@ -1,0 +1,97 @@
+一、控制器
+	class Blog extends CI_Controller{
+		function __construct(){
+			parent::__construct();
+		}
+		function index(){
+			echo "hello,world";
+		}
+	}
+	引入__contruct方法，否则index方法输出内容会重复一遍。
+
+	如果你的 URI 超过两个部分，那么超过的将被作为参数传递给方法
+	example.com/index.php/products/shoes/sandals/123
+	<?php
+		class Products extends CI_Controller {
+
+		    public function shoes($sandals, $id)
+		    {
+		        echo $sandals;
+		        echo $id;
+		    }
+		}
+?> 
+
+	定义默认控制器 application/config/routes.php $route['default_contronller']='';
+
+	重新定义方法的调用规则：
+	URI 的第二片段决定会调用控制器中的哪个方法。CodeIgniter 允许你使用 _remap() 方法来废除这种规则
+	被重新定义的方法调用方式（一般是 URI 中的第二片段）将作为一个参数传递给 _remap() 
+	public function _remap($method)
+	{
+	    if ($method == 'some_method')
+	    {
+	        $this->$method();
+	    }
+	    else
+	    {
+	        $this->comments();
+	    }
+	}
+
+	私有方法：只要在方法名字前面加一个下划线（“_”）做前缀就无法通过 URL 访问到了
+
+二、视图
+	当我们一次性载入多个视图的时候，你只需在第一个视图传入数据就可以了(header视图显示title,content视图显示message)
+	获取视图内容：
+	$string = $this->load->view('myfile', '', true);
+
+三、数据库类
+	1,数据库配置：application/config/database.php
+	2,连接数据库 自动连接 application/config/autoload.php $autoload['libraries']=array('database');
+	手动连接 $this->load->database();
+	3,查询
+	$this->db->query(); 以对象像是返回一个数据库结果集
+	$this->db->simple_query(); 仅返回true或false表示查询成功或失败
+	$this->db->escape();转义查询，这个函数将会确定数据类型，以便仅对字符串类型数据进行转义。并且，它也会自动把数据用单引号括起来，所以你不必手动添加单引号
+	$sql = "SELECT * FROM some_table WHERE id = ? AND status = ? AND author = ?";
+	$this->db->query($sql, array(3, 'live', 'Rick')); 
+	封装查询。使用封装查询的第二个好处是所有的值都会被自动转义，形成了较为安全的查询语句
+	4，查询结果
+	result()该方法执行成功返回一个对象数组，失败则返回一个空数组。
+	$query = $this->db->query("要执行的 SQL");
+	if ($query->num_rows() > 0) //判断不会返回空记录集
+	{
+	   foreach ($query->result() as $row)
+	   {
+	      echo $row->title;
+	      echo $row->name;
+	      echo $row->body;
+	   }
+	} 
+
+	retsult_array()成功返回关联数组，失败返回空数组
+	$query = $this->db->query("要执行的 SQL");
+	foreach ($query->result_array() as $row)
+	{
+	   echo $row['title'];
+	   echo $row['name'];
+	   echo $row['body'];
+	}
+
+	row()第一行数据作为对象返回。
+	row_array() 第一行作为数组返回
+	$row = $query->first_row()  以对象形式返回第一行
+	$row = $query->last_row() 以对象形式返回最后一行
+	$row = $query->first_row('array') 以数组形式返回第一行
+	$row = $query->last_row('array') 以数组形式返回最后一行
+
+	结果集辅助函数
+	$query->num_rows() 返回请求的行数
+	$query->num_fields() 返回请求的字段数
+	$query->free_result() 该函数将会释放当前查询所占用的内存并删除其关联的资源标识。通常来说，PHP 将会脚本执行结束后自动释放内存
+
+	查询辅助函数
+	$this->db->insert_id() 这个ID号是执行数据插入时的ID。 
+	$this->db->affected_rows() 被影响的行数
+	$this->db->count_all(); 计算出指定表的总行数并返回

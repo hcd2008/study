@@ -1,0 +1,33 @@
+怎样从其他站点获取内容？
+最简单的方法是使用fopen函数，但是fopen没有足够的参数来使用。
+可以使用php的扩展库 cURL.
+
+1、windows开启curl库支持：
+打开php.ini，将extension=php_curl.dll前的;号去掉。
+
+2、linux下开启curl库支持
+编译PHP时在./configure后加上 –with-curl
+
+3，基本用法：
+第一步、curl_init()创建一个新的curl会话。 $ch=curl_init();
+第二步、传递一个url给curl_setopt()函数：curl_setopt($ch, CURLOPT_URL, $url) $ch为curl_init()传回的句柄，参数2设置为CURLOPT_URL，则第三个参数填写url地址。并有其他选项可以设置。
+第三步、获取url站点的内容，并打印 curl_exec($ch);
+第四步、关闭当前的curl会话。curl_close($ch)
+
+4,不直接打印数据，而是获取。设置curl_setopt 参数CURLOPT_RETURNTRANSFER为true或非0值
+
+5,curl强大的原因：通过设置函数curl_setopt（）的不同参数，可以获得不同的结果。
+
+6,curl_setopt()函数的相关选项
+	CURLOPT_FOLLOWLOCATION设置为true时，curl会根据任何重定向命令更深层次的获取转向路径。当你尝试获取一个PHP的页面，然后这个PHP的页 面中有一段跳转代码 ,curl将从http://new_url获取内容，而不是返回跳转代码。和这个参数有关的两个选项是CURLOPT_MAXREDIRS和CURLOPT_AUTOREFERER .
+参 数CURLOPT_MAXREDIRS选项允许你定义跳转请求的最大次数，超过了这个次数将不再获取其内容。如果CURLOPT_AUTOREFERER 设置为true时，curl会自动添加Referer header在每一个跳转链接
+	CURLOPT_POST参数，做post请求，意味着你可以提交其他形式的页面，无须在表单中填入。
+	例如：$data = array('name' => ‘Dennis', 'surname' => ‘Pallett');
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+	CURLOPT_CONNECTTIMEOUT参数设置curl尝试请求链接的时间。如果设置的太短会导致请求失败。
+	 CURLOPT_TIMEOUT，这是用来设置curl允许执行的时间需求。值太小会导致下载不完整。
+	 CURLOPT_USERAGENT参数自定义请求的客户端名称。
+
+7，curl_getinfo()获取接受页面各种信息。通过设定第二个参数编辑这些信息或传递给一个数组。
+

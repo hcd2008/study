@@ -1,0 +1,43 @@
+nignx安装：sudo apt-get install nginx
+nignx启动停止方法：
+sudo /etc/init.d/nginx start
+sudo /etc/init.d/nginx stop
+sudo /etc/init.d/nginx restart 重启
+
+方法二：
+sudo service nginx start
+sudo service nginx stop
+sudo service nginx restart 重启
+
+配置文件位置：
+/etc/nginx/sites-available/default
+测试配置文件：
+sudo nginx -t
+重载配置文件：
+sudo service nginx reload
+
+mysql安装：sudo apt-get install mysql-server mysql-client
+
+配置文件：sudo vim /etc/mysql/my.cnf
+将 bind-address = 127.0.0.1 注释掉，就可以远程连接数据库了
+
+php安装
+sudo apt-get install php5-fpm
+
+php文件位置：
+/usr/sahre/nignx/html/
+
+启动php5-fpm服务
+sudo service php5-fpm start
+
+
+nginx模块工作原理：
+nginx接到http请求->查找配置文件将此次请求映射到一个locationblock-》location中所配置的各个指令启动不同的模块-》设计一个handler模块和多个filter模块。
+handler负责处理请求，完成响应内容生成。
+filter模块对响应内容进行处理。
+因此，nginx模块开发分为handler开发和filter开发。
+
+nginx模块配置结构：
+命名规则：ngx_http_[modulename]_[main|srv|loc]_conf_t  第一个参数为模块名，第二个参数表示模块运行在哪一层。
+
+

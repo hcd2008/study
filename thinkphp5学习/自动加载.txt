@@ -1,0 +1,10 @@
+手动加载：include  require  include_once require_once
+include等加载失败时返回false，并发出警告，成功则返回1，除非包含文件使用return等给出了返回值。
+
+可以在目标文件中使用return语句可以终止文件的加载，并返回调用的脚本。thinkphp的默认数组配置就是使用这个功能返回一个数组。
+
+php5会对重复加载文件时出现的函数重复定义发出致命错误报告。php4不会对return之后定义的函数报错。推荐使用include_once加载此类文件
+
+自动加载
+_autoload()函数，使用未被定义的类时自动调用。
+通过调用此函数，脚本引擎可以加载目标类文件。

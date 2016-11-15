@@ -1,0 +1,9 @@
+页面Trace  异常页面 断点调试 日志分析 远程调试
+
+页面trace：
+配置 'app_trace'=>'true',
+'trace'=>['type'=>'html']
+Ajax方式请求的信息不会在页面Trace中显示。
+
+断点调试：
+dump输出变量信息。halt跟dump类似，但是会退出程序。 trace控制台输出。

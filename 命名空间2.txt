@@ -1,0 +1,19 @@
+默认情况下，所有常量、类和函数名都放在全局空间下，就和php支持命名空间之前一样。
+namespace来声明命名空间，它必须在其他所有代码之前声明。
+namespace MyProject\Sub\Level  子命名空间
+
+引用方法：
+1,$a=new foo();
+如果当前有命名空间 currentnamespace则就被解析为currentnamespace\foo
+foo是全局的，不包含在任何命名空间，则foo会被解析为foo
+2,$a=new subnamespace\foo()或subnamespace\foo::staticmethod()
+如果当前命名空间为currentnamespace，则foo解析为 currentnamespace\subnamespace\foo
+如果foo不包含在命名空间中，foo会被解析为subnampace\foo
+3,$a=new \currentnamespace\foo() 或 \currentnamespace\foo::staticmethod()
+总是被解析为 currentnamespace\foo
+类比为文件名（例如 comment.php）、相对路径名（例如 ./article/comment.php）、绝对路径名（例如 /blog/article/comment.php）
+
+调用公共空间的方式：引入公共文件，直接在元素名称前加\就可以了。实际情况是不加也可以的！
+
+别名和导入
+php并不支持导入函数和常量。

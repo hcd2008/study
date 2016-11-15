@@ -1,0 +1,8 @@
+获取高级用户权限
+
+fdisk -l 查看U盘是否被识别，以及识别的U盘在哪个位置
+挂载U盘： mount /dev/sdb4 /mnt
+输入:cd回车，查看U盘下的文件
+
+拷贝文件 cp /mnt/***  到/home/hcd
+退出U盘：umount /mnt

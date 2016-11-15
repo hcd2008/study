@@ -1,0 +1,20 @@
+﻿1，查看用户  who am i
+
+2，创建用户 需要root权限。
+要使用sudo命令，当前用户必须在sudo用户组。
+su，su-，sudo
+su <user> 切换到用户user，需要输入密码
+sudo<cmd> 以特权级别运行cmd命令，需要当前用户属于sudo组，切需要输入当前用户密码。
+su - <user> 切换用户，同时环境变量也会跟着改变成目标用户的环境变量。
+新建用户：sudo adduser lilei 创建用户，同时为新用户创建home目录。
+切换用户：su -l hcd 输入密码
+
+3，用户组
+查看自己的用户组： groups+用户名
+新建用户不指定用户组，则默认自动创建一个与用户名相同的用户组。
+
+将用户加入sudo用户组：
+sudo usermod -G sudo lilei
+
+删除用户 
+sudo deluser lilei --remove-home

@@ -1,0 +1,42 @@
+基本用法：
+
+一，设置你的名字和email：
+git config --global user.name 'hcd'
+git config --global user.email '***'
+执行上面命令后，会在家目录下建立一个叫.gitconfig的文件
+git全局配置语法 git config --global [配置名称] [配置的值]
+
+二，获得一个git仓库
+方法一：clone git clone +地址   
+方法二：新建一个仓库
+mkdir project    cd project  git init  初始化一个仓库
+
+三，git工作流程
+1，创建或修改文件
+2，使用git add 将修改的文件保存到本地的缓存区。git add file1
+git add * 把当前目录下所有修改的新增的文件都自动添加
+3，使用git commit提交到本地代码库 git commit -m '备注'
+4，使用git push将本地代码库同步到远端代码库
+辅助功能： git status 查看当前git仓库的状态
+git commit -a -m '备注' 将所有没有加到缓存区的修改一起提交，但不会添加新建的文件。
+
+四，分支与合并
+创建分支： git branch hcd
+备注：git branch 可以查看目前的开发环境处在哪个分支上
+
+切换分支 git checkout 分支名
+
+分支合并：先切换到master分支再：git merge -m '备注' 分知名
+合并时如果更改了同一个文件，则可以用git diff查看区别，或者直接打开文件，不同的地方会有标示。手动修改文件后再commit
+
+删除一个分支
+git branch -d hcd 
+强制删除一个分支
+git branch -D hcd
+
+撤销一个合并
+git reset --hard HEAD^
+
+五、Git日志
+查看日志：git log
+日志排序： git log --pretty=format:'%h %s' --topo-order --graph

@@ -1,0 +1,9 @@
+引入js文件
+file/script/config.js
+file/script/common.js
+file/script/admin.js
+lang/zh-cn/lang.js
+特别是最后一个
+
+引入css文件
+admin/image/style.css

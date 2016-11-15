@@ -1,0 +1,38 @@
+一、文件、名称和地方
+	插件名：独一无二。
+	Readme文件：插件包中建立一个标准格式readme.ext文件
+二、文件Header
+	标准插件信息：插件的主文件顶部必须包含一个标准插件信息头。WordPress通过标准信息头识别插件的存在。
+	标准信息头格式：
+	    <?php
+
+    /*
+
+    Plugin Name: 插件名
+
+    Plugin URI: 插件的介绍或更新地址
+
+    Description: 插件描述
+
+    Version: 插件版本，例如 1.0
+
+    Author: 插件作者名称
+
+    Author URI: 插件作者的链接
+
+    License: A "Slug" license name e.g. GPL2
+
+    */
+
+    ?>
+    标准信息头至少也包括插件名称，这样WordPress才能识别你的插件。
+    其他信息将显示在控制面板插件管理页面中
+    注意：文件必须是 UTF-8 格式！
+
+    版权信息：大多数插件使用GPL或GPLCompatibleLicenses许可。如果使用GPL许可，要求插件中包含以下信息：
+
+三、开始编写插件
+	wordpress插件钩子：运行机理：当wordPress运行到不同阶段，WordPress会检查当前阶段是否注册了插件函数，如果是，那么
+	函数被执行。
+	通过执行插件函数改变了wordpress的默认功能。
+	
